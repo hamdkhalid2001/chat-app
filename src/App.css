@@ -1,0 +1,20 @@
+h1{
+    font-size: 32px;
+    font-weight: 700;
+}
+
+ input:focus,
+ textarea:focus,
+ select:focus {
+     outline: none;
+ }
+
+ input{
+    width: 450px;
+    border-radius: 14px;
+    background-color: rgb(229 231 235 /1);
+    padding: 12px 16px 12px 16px;
+    display: block;
+ }
+
+ /* w-[450px] rounded-[14px] bg-gray-200 px-4 py-3 block' */
