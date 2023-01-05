@@ -28,7 +28,9 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <main className='w-full max-w-[1480px]'>
+      <RouterProvider router={router} />
+    </main>
   </React.StrictMode>
 );
 

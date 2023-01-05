@@ -1,11 +1,12 @@
 import React from 'react'
-import {  Link } from "react-router-dom";
+import SideBar from '../../components/ChatPage/SideBar'
 
 function ChatPage() {
   return (
-    <div className='w-full h-[100vh] flex flex-col items-center pt-12'>
-        <h3>Sign in to Get Started</h3>
-        
+    <div className='w-full pt-12'>
+      <section className='w-[25%]'>
+        <SideBar/>        
+      </section>
 
     </div>
   )
