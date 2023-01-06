@@ -3,7 +3,7 @@ import Messages from "./Messages";
 import SendMessage from "./SendMessage";
 import { SocketContext, socket } from "../../contexts/Socket";
 
-function ChatArea() {
+function ChatArea(props) {
   return (
     <section className="px-12">
       <h1>User</h1>

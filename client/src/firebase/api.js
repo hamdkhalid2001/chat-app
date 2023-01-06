@@ -1,12 +1,20 @@
 import { firebaseApp } from "./firebase";
-import { doc, setDoc, getFirestore, getDoc } from "firebase/firestore";
+import {
+  doc,
+  addDoc,
+  getFirestore,
+  getDoc,
+  collection,
+} from "firebase/firestore";
 
 const db = getFirestore(firebaseApp);
 
-export async function addDataToFirebase(collection, document, data) {
+export async function addDataToFirebase(document, data) {
   console.log("Sending data", data);
   try {
-    await setDoc(doc(db, collection, document), data);
+    // await addDoc(doc(db, collection, document), data);
+    const docRef = await addDoc(collection(db, "users"), data);
+    console.log("Document written with ID: ", docRef.id);
   } catch (error) {
     console.log(error);
   }

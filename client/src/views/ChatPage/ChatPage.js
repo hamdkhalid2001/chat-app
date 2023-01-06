@@ -14,20 +14,20 @@ function ChatPage() {
   useEffect(() => {
     readUsers().then((res) => setUsers(res));
   }, []);
-
-  function selectUser(email) {
-    console.log("Email from Chat Page: ", email);
+  console.log(users);
+  function selectUser(id) {
+    console.log("Email from Chat Page: ", id);
+    setSelectedUser(id);
   }
 
   async function readUsers() {
     let usersData = [];
     const q = query(collection(db, "users"));
-    console.log("Function running");
     const querySnapshot = await getDocs(q);
     console.log(querySnapshot);
     querySnapshot.forEach((doc) => {
-      console.log(doc.id, " => ", doc.data());
-      usersData.push(doc.data());
+      console.log(doc.id + "=>" + doc.data());
+      usersData.push({ id: doc.id, ...doc.data() });
     });
     return usersData;
   }
@@ -39,7 +39,7 @@ function ChatPage() {
       </section>
 
       <section className="w-[75%]">
-        <ChatArea />
+        <ChatArea selectUser={selectedUser} />
       </section>
     </div>
   );

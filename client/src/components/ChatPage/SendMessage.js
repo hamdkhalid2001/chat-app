@@ -26,7 +26,7 @@ function SendMessage() {
           <img
             src={require("../../assets/images/send-icon.png")}
             alt=""
-            className="self-center"
+            className="self-center cursor-pointer"
             onClick={sendMessage}
           />
         </div>

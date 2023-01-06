@@ -12,11 +12,9 @@ const auth = getAuth();
 export function signUp(userData) {
   createUserWithEmailAndPassword(auth, userData.email, userData.password)
     .then((userCredential) => {
-      // Signed in
       const user = userCredential.user;
       console.log(user);
-      // ...
-      addDataToFirebase("users", userData.email, userData);
+      addDataToFirebase("users", userData);
       return redirect("/chat-page");
     })
     .catch((error) => {
