@@ -1,9 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
-// import { addDataToFirebase } from "../../services/api";
-import { signUp } from "../../services/auth";
+import { signUp } from "../../firebase/auth";
+import { AuthContext } from "../../contexts/AuthProvider";
+import { useNavigate } from "react-router-dom";
 
 function SignUp() {
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (user) {
+      navigate("/chat-page", { replace: true });
+    }
+  }, []);
+
+  console.log("Sign Up component called");
   const [userData, setUserData] = useState({
     firstName: "",
     lastName: "",

@@ -5,11 +5,11 @@ import {
   signOut,
 } from "firebase/auth";
 import { addDataToFirebase } from "./api";
+import { redirect } from "react-router-dom";
 
 const auth = getAuth();
 
 export function signUp(userData) {
-  console.log("Auth running");
   createUserWithEmailAndPassword(auth, userData.email, userData.password)
     .then((userCredential) => {
       // Signed in
@@ -17,6 +17,7 @@ export function signUp(userData) {
       console.log(user);
       // ...
       addDataToFirebase("users", userData.email, userData);
+      return redirect("/chat-page");
     })
     .catch((error) => {
       const errorCode = error.code;
@@ -44,8 +45,10 @@ export function logOut() {
   signOut(auth)
     .then(() => {
       // Sign-out successful.
+      console.log("Signed Out");
     })
     .catch((error) => {
+      console.log(error);
       // An error happened.
     });
 }

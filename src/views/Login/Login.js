@@ -1,10 +1,20 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
-import { readSingleDataFromFirebase } from "../../services/api";
-import { signIn } from "../../services/auth";
+import { signIn } from "../../firebase/auth";
+import { AuthContext } from "../../contexts/AuthProvider";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
-  const [loginData, setLoginData] = React.useState({
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (user) {
+      console.log("No user");
+      navigate("/chat-page", { replace: true });
+    }
+  }, []);
+
+  const [loginData, setLoginData] = useState({
     email: "",
     password: "",
   });
