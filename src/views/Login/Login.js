@@ -40,7 +40,7 @@ function Login() {
           onChange={handleChange}
         />
         <input
-          type="text"
+          type="password"
           name="password"
           id="password"
           placeholder="Password"
