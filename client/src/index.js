@@ -27,7 +27,7 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <AuthProvider>
-      <main className="w-full max-w-[1480px]">
+      <main className="w-full max-w-[1440px]">
         <RouterProvider router={router} />
       </main>
     </AuthProvider>
