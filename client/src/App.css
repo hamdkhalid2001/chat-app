@@ -17,4 +17,16 @@ h1{
     display: block;
  }
 
+/* Hide scrollbar for Chrome, Safari and Opera */
+#chats-parent::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+#chats-parent {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+}
  /* w-[450px] rounded-[14px] bg-gray-200 px-4 py-3 block' */
