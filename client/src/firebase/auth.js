@@ -1,28 +1,7 @@
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-} from "firebase/auth";
-import { addDataToFirebase } from "./api";
-import { redirect } from "react-router-dom";
+import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 const auth = getAuth();
-
-export function signUp(userData) {
-  createUserWithEmailAndPassword(auth, userData.email, userData.password)
-    .then((userCredential) => {
-      const user = userCredential.user;
-      console.log(user);
-      addDataToFirebase("users", userData);
-      return redirect("/chat-page");
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log(errorCode, " ", errorMessage);
-    });
-}
 
 export function signIn(loginData) {
   console.log("login");
