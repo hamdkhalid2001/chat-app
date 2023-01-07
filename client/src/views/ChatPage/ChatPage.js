@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import SideBar from "../../components/ChatPage/SideBar";
 import ChatArea from "../../components/ChatPage/ChatArea";
-import { AuthContext } from "../../contexts/AuthProvider";
-import { useNavigate } from "react-router-dom";
 import { collection, query, getFirestore, getDocs } from "firebase/firestore";
 import { firebaseApp } from "../../firebase/firebase";
+import { logOut } from "../../firebase/auth";
 
 function ChatPage() {
   const [users, setUsers] = useState([]);
@@ -35,6 +34,12 @@ function ChatPage() {
   return (
     <div className="w-full p-12 flex">
       <section className="w-[25%]">
+        <button
+          className="w-[100px] border border-black rounded-[14px]"
+          onClick={logOut}
+        >
+          Sign Out
+        </button>
         <SideBar users={users} handleSelectUser={selectUser} />
       </section>
 

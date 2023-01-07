@@ -1,15 +1,8 @@
-import React, { useEffect, useState, useContext } from "react";
 import Search from "./Search";
 import Chats from "./Chats";
 import AddFriend from "./AddFriend";
-import { AuthContext } from "../../contexts/AuthProvider";
-import { collection, query, getFirestore, getDocs } from "firebase/firestore";
-import { firebaseApp } from "../../firebase/firebase";
 
 function SideBar(props) {
-  const { user } = useContext(AuthContext);
-  const [searchedUsers, setSearchedUsers] = useState();
-
   // console.log(user.email);
   const usersArray = props.users.map((item, index) => {
     return (

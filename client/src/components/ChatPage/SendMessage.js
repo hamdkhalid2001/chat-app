@@ -1,18 +1,12 @@
-import React, { useContext, useCallback, useState } from "react";
-import { SocketContext } from "../../contexts/Socket";
+import React, { useState } from "react";
 
 function SendMessage() {
-  const socket = useContext(SocketContext);
   const [message, setMessage] = useState("");
 
   function handleMessage(event) {
     setMessage(event.target.value);
   }
-  function sendMessage() {
-    console.log(message);
-    socket.emit("chat message", message);
-    setMessage("");
-  }
+
   return (
     <section className=" w-full">
       <div>
@@ -27,7 +21,6 @@ function SendMessage() {
             src={require("../../assets/images/send-icon.png")}
             alt=""
             className="self-center cursor-pointer"
-            onClick={sendMessage}
           />
         </div>
       </div>

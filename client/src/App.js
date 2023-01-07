@@ -1,10 +1,42 @@
-import './App.css';
+import "./App.css";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import SignUp from "./views/SignUp/SignUp";
+import ChatPage from "./views/ChatPage/ChatPage";
+import Login from "./views/Login/Login";
+import { AuthContext } from "./contexts/AuthProvider";
+import React, { useContext } from "react";
 
 function App() {
+  const { user } = useContext(AuthContext);
+
+  const ProtectedRoute = ({ children }) => {
+    if (!user) {
+      return <Navigate to="/login" />;
+    }
+    return children;
+  };
+
   return (
-    <div className="App w-full max-w-[900px] self-center flex flex-col justify-center">
-      <h1 className='text-3xl text-red-500'>Hello World</h1>
-    </div>
+    <Router>
+      <Routes>
+        <Route
+          exact
+          path="/"
+          element={
+            <ProtectedRoute>
+              <ChatPage />
+            </ProtectedRoute>
+          }
+        ></Route>
+        <Route exact path="/sign-up" element={<SignUp />}></Route>
+        <Route exact path="/login" element={<Login />}></Route>
+      </Routes>
+    </Router>
   );
 }
 

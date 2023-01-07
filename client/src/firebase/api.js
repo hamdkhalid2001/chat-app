@@ -12,7 +12,6 @@ const db = getFirestore(firebaseApp);
 export async function addDataToFirebase(document, data) {
   console.log("Sending data", data);
   try {
-    // await addDoc(doc(db, collection, document), data);
     const docRef = await addDoc(collection(db, "users"), data);
     console.log("Document written with ID: ", docRef.id);
   } catch (error) {
