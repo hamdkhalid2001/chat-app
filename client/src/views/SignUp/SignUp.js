@@ -1,7 +1,4 @@
-import React, { useState, useContext } from "react";
-import { Link } from "react-router-dom";
-// import { signUp } from "../../firebase/auth";
-// import { AuthContext } from "../../contexts/AuthProvider";
+import React, { useState } from "react";
 import { addDataToFirebase } from "../../firebase/api";
 import { useNavigate } from "react-router-dom";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
