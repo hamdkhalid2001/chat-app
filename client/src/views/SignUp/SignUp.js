@@ -33,8 +33,6 @@ function SignUp() {
     }
   }
 
-  console.log("Sign Up component called");
-
   function handleChange(event) {
     setUserData((prevUserData) => {
       return {
