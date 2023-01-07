@@ -16,10 +16,17 @@ function ChatPage() {
   useEffect(() => {
     readUsers().then((res) => setUsers(res));
   }, []);
-  console.log(users);
-  function selectUser(id) {
-    console.log("Email from Chat Page: ", id);
-    setSelectedUser(id);
+
+  function addUser(user) {
+    //Data to be stored
+    // email: "user3@gmail.com";
+    // firstName: "User";
+    // id: "A0TtqPZy4BuqdtvK58EB";
+    // lastName: "3";
+    // password: "123456";
+    // userName: "user3";
+    console.log("user from Chat Page: ", user);
+    setSelectedUser(user);
   }
 
   function logOut() {
@@ -49,7 +56,7 @@ function ChatPage() {
   return (
     <div className="w-full p-12 flex">
       <section className="w-[25%]">
-        <SideBar users={users} handleSelectUser={selectUser} />
+        <SideBar users={users} handleSelectUser={addUser} />
       </section>
 
       <section className="w-[75%]">
