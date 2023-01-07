@@ -8,8 +8,8 @@ import {
 import SignUp from "./views/SignUp/SignUp";
 import ChatPage from "./views/ChatPage/ChatPage";
 import Login from "./views/Login/Login";
-import { AuthProvider, AuthContext } from "./contexts/AuthProvider";
-import React, { useContext, useEffect, useState } from "react";
+import { AuthContext } from "./contexts/AuthProvider";
+import React, { useContext } from "react";
 
 function App() {
   const { user } = useContext(AuthContext);

@@ -1,4 +1,4 @@
-import React, { useContext, useCallback, useState } from "react";
+import React, { useState } from "react";
 
 function SendMessage() {
   const [message, setMessage] = useState("");
