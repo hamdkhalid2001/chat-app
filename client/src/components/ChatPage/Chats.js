@@ -4,7 +4,7 @@ function Chats(props) {
   return (
     <div
       className="py-5 px-2 w-full border border-gray-300 rounded-[12px] cursor-pointer"
-      onClick={() => props.handleSelectUser(props.id)}
+      onClick={() => props.handleSelectUser(props.uid)}
     >
       <div className="flex h-full w-full">
         <img

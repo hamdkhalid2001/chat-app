@@ -48,7 +48,7 @@ function ChatPage() {
     console.log(querySnapshot);
     querySnapshot.forEach((doc) => {
       console.log(doc.id + "=>" + doc.data());
-      usersData.push({ id: doc.id, ...doc.data() });
+      usersData.push(doc.data());
     });
     return usersData;
   }

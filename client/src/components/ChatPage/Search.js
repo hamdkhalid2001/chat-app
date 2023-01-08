@@ -24,17 +24,14 @@ function Search(props) {
     try {
       const db = getFirestore(firebaseApp);
 
-      const q = query(
-        collection(db, "users"),
-        where("email", "==", searchText)
-      );
+      const q = query(collection(db, "users"), where("name", "==", searchText));
 
       const querySnapshot = await getDocs(q);
 
       querySnapshot.forEach((doc) => {
-        const user = { id: doc.id, ...doc.data() };
+        const user = { uid: doc.uid, ...doc.data() };
         props.handleSelectUser(user);
-        console.log(doc.id, " => ", doc.data());
+        console.log(doc.uid, " => ", doc.data());
       });
     } catch (error) {
       console.log(error);

@@ -5,9 +5,11 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 function SignUp() {
   const [userData, setUserData] = useState({
-    firstName: "",
-    lastName: "",
-    userName: "",
+    uid: "",
+    name: "",
+    email: "",
+  });
+  const [authData, setAuthData] = useState({
     email: "",
     password: "",
   });
@@ -21,12 +23,16 @@ function SignUp() {
     try {
       const res = await createUserWithEmailAndPassword(
         auth,
-        userData.email,
-        userData.password
+        authData.email,
+        authData.password
       );
       const user = res.user;
-      console.log(user);
-      addDataToFirebase("users", userData);
+      console.log("User while signing up: ", user);
+      addDataToFirebase(user.uid, {
+        ...userData,
+        uid: user.uid,
+        email: user.email,
+      });
       navigate("/");
     } catch (error) {
       console.log(error);
@@ -41,6 +47,14 @@ function SignUp() {
       };
     });
   }
+  function handleAuthData(event) {
+    setAuthData((prevAuthData) => {
+      return {
+        ...prevAuthData,
+        [event.target.name]: event.target.value,
+      };
+    });
+  }
 
   return (
     <div className="w-full h-[100vh] flex flex-col justify-center items-center">
@@ -49,23 +63,9 @@ function SignUp() {
         <section className="mt-8 grid gap-y-4">
           <input
             type="text"
-            name="firstName"
-            id="firstName"
-            placeholder="First Name"
-            onChange={handleChange}
-          />
-          <input
-            type="text"
-            name="lastName"
-            id="lastName"
-            placeholder="Last Name"
-            onChange={handleChange}
-          />
-          <input
-            type="text"
-            name="userName"
-            id="username"
-            placeholder="User Name"
+            name="name"
+            id="name"
+            placeholder="Name"
             onChange={handleChange}
           />
           <input
@@ -73,14 +73,14 @@ function SignUp() {
             name="email"
             id="email"
             placeholder="Email"
-            onChange={handleChange}
+            onChange={handleAuthData}
           />
           <input
             type="password"
             name="password"
             id="password"
             placeholder="Password"
-            onChange={handleChange}
+            onChange={handleAuthData}
           />
           <button
             type="submit"
