@@ -2,15 +2,10 @@ import Search from "./Search";
 import Chats from "./Chats";
 import AddFriend from "./AddFriend";
 import { AuthContext } from "../../contexts/AuthProvider";
+import { addDataToFirebase } from "../../firebase/api";
 
 import { useState, useContext } from "react";
-import {
-  collection,
-  query,
-  where,
-  getDocs,
-  getFirestore,
-} from "firebase/firestore";
+import { doc, getFirestore, updateDoc, arrayUnion } from "firebase/firestore";
 import { getAuth, updateProfile } from "firebase/auth";
 import { firebaseApp } from "../../firebase/firebase";
 
@@ -37,17 +32,17 @@ function SideBar(props) {
     props.handleSelectUser(user);
   }
 
-  function addFriend() {
-    const auth = getAuth();
-    updateProfile(auth.currentUser, {
-      firstName: "Ifra",
-    })
-      .then(() => {
-        console.log("Profile updated");
-      })
-      .catch((error) => {
-        console.log(error);
+  async function addFriend() {
+    try {
+      await updateDoc(doc(db, "users", user.uid), {
+        friends: arrayUnion(userToAdd.uid),
       });
+      await updateDoc(doc(db, "users", userToAdd.uid), {
+        friends: arrayUnion(user.uid),
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
