@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { addDataToFirebase } from "../../firebase/api";
 import { useNavigate } from "react-router-dom";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
 
 function SignUp() {
   const [userData, setUserData] = useState({
@@ -27,6 +31,9 @@ function SignUp() {
         authData.password
       );
       const user = res.user;
+      updateProfile(auth.currentUser, {
+        displayName: userData.name,
+      });
       console.log("User while signing up: ", user);
       addDataToFirebase(user.uid, {
         ...userData,

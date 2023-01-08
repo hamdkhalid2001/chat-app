@@ -2,11 +2,14 @@ import Search from "./Search";
 import Chats from "./Chats";
 import AddFriend from "./AddFriend";
 import { AuthContext } from "../../contexts/AuthProvider";
-import { addDataToFirebase } from "../../firebase/api";
-
-import { useState, useContext } from "react";
-import { doc, getFirestore, updateDoc, arrayUnion } from "firebase/firestore";
-import { getAuth, updateProfile } from "firebase/auth";
+import { useState, useContext, useEffect } from "react";
+import {
+  doc,
+  getFirestore,
+  updateDoc,
+  arrayUnion,
+  getDoc,
+} from "firebase/firestore";
 import { firebaseApp } from "../../firebase/firebase";
 
 function SideBar(props) {
@@ -14,37 +17,53 @@ function SideBar(props) {
 
   const { user } = useContext(AuthContext);
   const [userToAdd, setUserToAdd] = useState();
+  const [friends, setFriends] = useState();
+  const [noFriendsErr, setNoFriendsErr] = useState(false);
 
-  const usersArray = props.users.map((item, index) => {
-    return (
-      <Chats
-        name={item.name}
-        email={item.email}
-        handleSelectUser={props.handleSelectUser}
-        key={item.uid}
-        id={item.uid}
-      />
-    );
-  });
+  useEffect(() => {
+    getFriends();
+  }, []);
+  useEffect(() => {
+    console.log(friends);
+  }, [friends]);
+
+  async function getFriends() {
+    console.log("func clalu");
+    getDoc(doc(db, "users", user.uid))
+      .then((res) => {
+        let data = res.data().friends.map((element, index) => {
+          return <Chats user={element} key={index} />;
+        });
+        setFriends(data);
+      })
+      .catch((err) => console.log(err));
+  }
   function getUserToAdd(user) {
     console.log("Recieving user in Sidebar:", user);
     setUserToAdd(user);
     props.handleSelectUser(user);
   }
-
   async function addFriend() {
     try {
       await updateDoc(doc(db, "users", user.uid), {
-        friends: arrayUnion(userToAdd.uid),
+        friends: arrayUnion({
+          friendId: userToAdd.uid,
+          friendEmail: userToAdd.email,
+          friendName: userToAdd.name,
+        }),
       });
       await updateDoc(doc(db, "users", userToAdd.uid), {
-        friends: arrayUnion(user.uid),
+        friends: arrayUnion({
+          friendId: user.uid,
+          friendEmail: user.email,
+          friendName: user.displayName,
+        }),
       });
+      getFriends();
     } catch (error) {
       console.log(error);
     }
   }
-
   return (
     <div>
       <p className="text-[28px] font-bold mb-2">Chats</p>
@@ -55,7 +74,7 @@ function SideBar(props) {
         className="flex flex-col gap-y-4 h-[35rem] overflow-y-scroll"
         id="chats-parent"
       >
-        {usersArray}
+        {friends}
       </section>
     </div>
   );
