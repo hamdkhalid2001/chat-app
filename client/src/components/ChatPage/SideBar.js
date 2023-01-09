@@ -28,11 +28,16 @@ function SideBar(props) {
   }, [friends]);
 
   async function getFriends() {
-    console.log("func clalu");
     getDoc(doc(db, "users", user.uid))
       .then((res) => {
         let data = res.data().friends.map((element, index) => {
-          return <Chats user={element} key={index} />;
+          return (
+            <Chats
+              user={element}
+              key={index}
+              handleSelectUser={props.handleSelectUser}
+            />
+          );
         });
         setFriends(data);
       })
