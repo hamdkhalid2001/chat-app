@@ -1,13 +1,19 @@
 import React, { useState } from "react";
 import { addDataToFirebase } from "../../firebase/api";
 import { useNavigate } from "react-router-dom";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
 
 function SignUp() {
   const [userData, setUserData] = useState({
-    firstName: "",
-    lastName: "",
-    userName: "",
+    uid: "",
+    name: "",
+    email: "",
+  });
+  const [authData, setAuthData] = useState({
     email: "",
     password: "",
   });
@@ -21,24 +27,37 @@ function SignUp() {
     try {
       const res = await createUserWithEmailAndPassword(
         auth,
-        userData.email,
-        userData.password
+        authData.email,
+        authData.password
       );
       const user = res.user;
-      console.log(user);
-      addDataToFirebase("users", userData);
+      updateProfile(auth.currentUser, {
+        displayName: userData.name,
+      });
+      console.log("User while signing up: ", user);
+      addDataToFirebase(user.uid, {
+        ...userData,
+        uid: user.uid,
+        email: user.email,
+      });
       navigate("/");
     } catch (error) {
       console.log(error);
     }
   }
 
-  console.log("Sign Up component called");
-
   function handleChange(event) {
     setUserData((prevUserData) => {
       return {
         ...prevUserData,
+        [event.target.name]: event.target.value,
+      };
+    });
+  }
+  function handleAuthData(event) {
+    setAuthData((prevAuthData) => {
+      return {
+        ...prevAuthData,
         [event.target.name]: event.target.value,
       };
     });
@@ -51,23 +70,9 @@ function SignUp() {
         <section className="mt-8 grid gap-y-4">
           <input
             type="text"
-            name="firstName"
-            id="firstName"
-            placeholder="First Name"
-            onChange={handleChange}
-          />
-          <input
-            type="text"
-            name="lastName"
-            id="lastName"
-            placeholder="Last Name"
-            onChange={handleChange}
-          />
-          <input
-            type="text"
-            name="userName"
-            id="username"
-            placeholder="User Name"
+            name="name"
+            id="name"
+            placeholder="Name"
             onChange={handleChange}
           />
           <input
@@ -75,14 +80,14 @@ function SignUp() {
             name="email"
             id="email"
             placeholder="Email"
-            onChange={handleChange}
+            onChange={handleAuthData}
           />
           <input
             type="password"
             name="password"
             id="password"
             placeholder="Password"
-            onChange={handleChange}
+            onChange={handleAuthData}
           />
           <button
             type="submit"

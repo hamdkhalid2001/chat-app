@@ -1,11 +1,41 @@
 import React, { useState } from "react";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  getFirestore,
+} from "firebase/firestore";
+import { firebaseApp } from "../../firebase/firebase";
 
 function Search(props) {
   const [searchText, setSearchText] = useState("");
-  // const [debounceValue, setDebounceValue] = useState(searchText);
+
   function handleInput(event) {
     setSearchText(event.target.value);
-    // console.log(searchText);
+  }
+  function handleKey(event) {
+    if (event.code === "Enter") {
+      searchUsers();
+    }
+  }
+
+  async function searchUsers() {
+    try {
+      const db = getFirestore(firebaseApp);
+
+      const q = query(collection(db, "users"), where("name", "==", searchText));
+
+      const querySnapshot = await getDocs(q);
+
+      querySnapshot.forEach((doc) => {
+        const user = { uid: doc.uid, ...doc.data() };
+        props.handleSelectUser(user);
+        console.log(doc.uid, " => ", doc.data());
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
@@ -16,6 +46,7 @@ function Search(props) {
           className="w-[70%]"
           placeholder="Search"
           onChange={handleInput}
+          onKeyDown={handleKey}
         />
         <img
           src={require(`../../assets/images/search.png`)}
