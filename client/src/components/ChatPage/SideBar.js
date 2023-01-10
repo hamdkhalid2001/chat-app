@@ -8,45 +8,30 @@ import {
   getFirestore,
   updateDoc,
   arrayUnion,
-  getDoc,
+  onSnapshot,
 } from "firebase/firestore";
 import { firebaseApp } from "../../firebase/firebase";
 
-function SideBar(props) {
+function SideBar() {
   const db = getFirestore(firebaseApp);
 
   const { user } = useContext(AuthContext);
   const [userToAdd, setUserToAdd] = useState();
   const [friends, setFriends] = useState();
-  const [noFriendsErr, setNoFriendsErr] = useState(false);
 
   useEffect(() => {
-    getFriends();
+    const unsub = onSnapshot(doc(db, "users", user.uid), (doc) => {
+      console.log("Messages: ", doc.data());
+      doc.exists() && setFriends(doc.data().friends);
+    });
+    return () => {
+      unsub();
+    };
   }, []);
-  useEffect(() => {
-    console.log(friends);
-  }, [friends]);
 
-  async function getFriends() {
-    getDoc(doc(db, "users", user.uid))
-      .then((res) => {
-        let data = res.data().friends.map((element, index) => {
-          return (
-            <Chats
-              user={element}
-              key={index}
-              handleSelectUser={props.handleSelectUser}
-            />
-          );
-        });
-        setFriends(data);
-      })
-      .catch((err) => console.log(err));
-  }
   function getUserToAdd(user) {
     console.log("Recieving user in Sidebar:", user);
     setUserToAdd(user);
-    props.handleSelectUser(user);
   }
   async function addFriend() {
     try {
@@ -64,14 +49,14 @@ function SideBar(props) {
           friendName: user.displayName,
         }),
       });
-      getFriends();
     } catch (error) {
       console.log(error);
     }
   }
   return (
     <div>
-      <p className="text-[28px] font-bold mb-2">Chats</p>
+      <p className="text-[28px] font-bold mb-2">Hey {user.displayName}!</p>
+
       <Search handleSelectUser={getUserToAdd} />
       {userToAdd && <AddFriend user={userToAdd} handleAddFriend={addFriend} />}
       <h3 className="text-[28px] font-semibold">Friends</h3>
@@ -79,7 +64,11 @@ function SideBar(props) {
         className="flex flex-col gap-y-4 h-[35rem] overflow-y-scroll"
         id="chats-parent"
       >
-        {friends}
+        {friends
+          ? friends.map((friend, index) => {
+              return <Chats user={friend} key={index} />;
+            })
+          : "No Friends ? Search to add"}
       </section>
     </div>
   );

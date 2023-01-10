@@ -1,6 +1,6 @@
 import React from "react";
 import { AuthContext } from "../../contexts/AuthProvider";
-import { useState, useContext, useEffect } from "react";
+import { useContext } from "react";
 
 function Message(message) {
   const { user } = useContext(AuthContext);

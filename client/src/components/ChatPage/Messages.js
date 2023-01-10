@@ -1,37 +1,27 @@
 import React from "react";
-import { getFirestore, getDoc, doc, onSnapshot } from "firebase/firestore";
+import { getFirestore, doc, onSnapshot } from "firebase/firestore";
 import { useState, useContext, useEffect } from "react";
-import { AuthContext } from "../../contexts/AuthProvider";
 import { firebaseApp } from "../../firebase/firebase";
+import { ChatContext } from "../../contexts/ChatProvider";
+
 import Message from "./Message";
 
-function Messages(props) {
+function Messages() {
   const db = getFirestore(firebaseApp);
-  const { user } = useContext(AuthContext);
+  const { data } = useContext(ChatContext);
   const [messages, setMessages] = useState();
+
   useEffect(() => {
-    console.log("Clear messages");
     setMessages("");
-  }, []);
+    if (!data.user) return;
 
-  useEffect(() => {
-    if (!props.friend) return;
-    console.log("Sender id: ", user.uid);
-    console.log("Reciever id: ", props.friend.friendId);
-    const combinedId =
-      user.uid > props.friend.friendId
-        ? user.uid + props.friend.friendId
-        : props.friend.friendId + user.uid;
-    console.log(combinedId);
-
-    const unsub = onSnapshot(doc(db, "chats", combinedId), (doc) => {
-      console.log("Messages: ", doc.data());
+    const unsub = onSnapshot(doc(db, "chats", data.chatId), (doc) => {
       doc.exists() && setMessages(doc.data().messages);
     });
     return () => {
       unsub();
     };
-  }, [props.friend]);
+  }, [data.user]);
 
   return (
     <div className="w-full h-[70vh] flex flex-col">
@@ -44,18 +34,3 @@ function Messages(props) {
 }
 
 export default Messages;
-
-// const styles = {
-//   marginLeft: item.sender === user.uid ? "auto" : "0px",
-//   padding: "8px 20px 8px 20px",
-//   marginBottom: "2px",
-//   backgroundColor:
-//     item.sender === user.uid
-//       ? "rgba(29, 78, 216, 1)"
-//       : "rgba(255, 255, 255, 1)",
-//   marginRight: item.sender !== user.uid ? "auto" : "0px",
-//   marginTop: index === 0 ? "auto" : "",
-//   borderRadius: "14px",
-//   color: item.sender === user.uid ? "white" : "black",
-//   border: item.sender !== user.uid ? "1px solid black" : "",
-// };
