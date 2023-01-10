@@ -49,26 +49,28 @@ function SideBar() {
           friendName: user.displayName,
         }),
       });
+      setUserToAdd();
     } catch (error) {
       console.log(error);
     }
   }
   return (
     <div>
-      <p className="text-[28px] font-bold mb-2">Hey {user.displayName}!</p>
+      <p className="text-[28px] font-bold mb-2">
+        Hey {user.displayName.split(" ")[0]}!
+      </p>
 
       <Search handleSelectUser={getUserToAdd} />
       {userToAdd && <AddFriend user={userToAdd} handleAddFriend={addFriend} />}
       <h3 className="text-[28px] font-semibold">Friends</h3>
       <section
-        className="flex flex-col gap-y-4 h-[35rem] overflow-y-scroll"
+        className="flex flex-col gap-y-4  overflow-y-scroll"
         id="chats-parent"
       >
-        {friends
-          ? friends.map((friend, index) => {
-              return <Chats user={friend} key={index} />;
-            })
-          : "No Friends ? Search to add"}
+        {friends &&
+          friends.map((friend, index) => {
+            return <Chats user={friend} key={index} />;
+          })}
       </section>
     </div>
   );
