@@ -13,12 +13,20 @@ export function ChatContextProvider({ children }) {
   const chatReducer = (state, action) => {
     switch (action.type) {
       case "CHANGE_USER":
+        console.log("Setting user");
+
         return {
           user: action.payload,
           chatId:
-            currentUser.uid > action.payload.friendId
-              ? currentUser.uid + action.payload.friendId
-              : action.payload.friendId + currentUser.uid,
+            currentUser.uid > action.payload.uid
+              ? currentUser.uid + action.payload.uid
+              : action.payload.uid + currentUser.uid,
+        };
+      case "DELETE_USER":
+        console.log("Deleting user");
+        return {
+          user: {},
+          chatId: null,
         };
 
       default:

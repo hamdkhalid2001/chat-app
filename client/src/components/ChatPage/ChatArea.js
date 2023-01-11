@@ -8,7 +8,6 @@ import {
   getFirestore,
   updateDoc,
   setDoc,
-  getDoc,
   doc,
   arrayUnion,
 } from "firebase/firestore";
@@ -18,19 +17,21 @@ import { useNavigate } from "react-router-dom";
 
 function ChatArea() {
   const { data } = useContext(ChatContext);
+  const { dispatch } = useContext(ChatContext);
   const db = getFirestore(firebaseApp);
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
     if (!data.user) return;
-    createCollection();
+    // createCollection();
   }, [data.user]);
 
   function logOut() {
     const auth = getAuth();
     signOut(auth)
       .then(() => {
+        dispatch({ type: "DELETE_USER" });
         navigate("/login");
         console.log("Signed Out");
       })
@@ -47,18 +48,24 @@ function ChatArea() {
           message: message,
         }),
       });
-    } catch (error) {
-      console.log(error);
-    }
-  }
-  async function createCollection() {
-    try {
-      const res = await getDoc(doc(db, "chats", data.chatId));
-      if (!res.exists()) {
-        await setDoc(doc(db, "chats", data.chatId), {
-          messages: [],
-        });
-      }
+      const res2 = await setDoc(
+        doc(db, "userChats", user.uid),
+        {
+          [data.chatId + ".chatInfo"]: {
+            lastMessage: message,
+          },
+        },
+        { merge: true }
+      );
+      const res3 = await setDoc(
+        doc(db, "userChats", data.user.uid),
+        {
+          [data.chatId + ".chatInfo"]: {
+            lastMessage: message,
+          },
+        },
+        { merge: true }
+      );
     } catch (error) {
       console.log(error);
     }
@@ -69,7 +76,7 @@ function ChatArea() {
       {data.user && (
         <>
           <div className="flex justify-between">
-            <h1>{data.user?.friendName}</h1>
+            <h1>{data.user?.name}</h1>
             <button
               className="w-[130px] py-2 border border-black rounded-[14px] self-center"
               onClick={logOut}

@@ -11,13 +11,17 @@ function Messages() {
   const { data } = useContext(ChatContext);
   const [messages, setMessages] = useState();
   useEffect(() => {
-    setMessages("");
-    const unsub = onSnapshot(doc(db, "chats", data.chatId), (doc) => {
-      doc.exists() && setMessages(doc.data().messages);
-    });
-    return () => {
-      unsub();
-    };
+    function readMessages() {
+      setMessages("");
+      console.log("asdsds", data.user);
+      const unsub = onSnapshot(doc(db, "chats", data.chatId), (doc) => {
+        doc.exists() && setMessages(doc.data().messages);
+      });
+      return () => {
+        unsub();
+      };
+    }
+    Object.keys(data.user).length > 0 && readMessages();
   }, [data.user]);
 
   return (

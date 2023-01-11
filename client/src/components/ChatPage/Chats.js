@@ -16,7 +16,10 @@ function Chats(props) {
           alt="User icon"
           className="w-[60px] h-[60px]"
         />
-        <p className="self-center ml-3">{props.user.friendName}</p>
+        <div className="self-center">
+          <p className="ml-3 font-bold">{props.user.name}</p>
+          <p className="ml-3 font-light">{props.user.lastMessage}</p>
+        </div>
       </div>
     </div>
   );
