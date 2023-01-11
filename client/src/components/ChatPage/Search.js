@@ -34,10 +34,7 @@ function Search(props) {
     try {
       const db = getFirestore(firebaseApp);
 
-      const q = query(
-        collection(db, "users"),
-        where("email", "==", searchText)
-      );
+      const q = query(collection(db, "users"), where("name", "==", searchText));
 
       const querySnapshot = await getDocs(q);
 
