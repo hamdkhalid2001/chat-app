@@ -106,16 +106,18 @@ function SignUp() {
       <form
         onSubmit={signUp}
         method="POST"
-        className="w-[70%] grid place-items-center"
+        className="w-full grid place-items-center"
       >
-        <section className="mt-8 grid gap-y-4 w-[375px] place-items-center sign-up-form">
-          <h1>Sign up to Get Started</h1>
+        <section className="mt-8 grid gap-y-4  place-items-center sign-up-form">
+          <h1 className="text-[30px] sm:text-[40px] mb-2">
+            Sign up to Get Started
+          </h1>
           {signUpFormData.map((element, index) => {
             return <InputField data={element} key={index} />;
           })}
           <button
             type="submit"
-            className="w-[450px] mt-1 rounded-[8px] text-center py-2 bg-blue-500 text-white btn-form"
+            className="w-[340px] sm:w-[450px] mt-1 rounded-[8px] text-center py-2 bg-blue-500 text-white btn-form"
           >
             SignUp
           </button>

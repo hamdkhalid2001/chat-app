@@ -33,7 +33,7 @@ function Search(props) {
   async function searchUsers() {
     try {
       const db = getFirestore(firebaseApp);
-      console.log(searchText);
+
       const q = query(
         collection(db, "users"),
         where("email", "==", searchText)
