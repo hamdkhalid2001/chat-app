@@ -18,8 +18,11 @@ function InputField(props) {
         pattern={props.data.pattern}
         onBlur={handleFocus}
         focused={focused.toString()}
+        className="w-[90%] sm:w-full min-w-[325px] max-w-[450px] "
       />
-      <span className={props.data.className + " text-red-500"}>
+      <span
+        className={props.data.className + " text-red-500 w-[90%] sm:w-full"}
+      >
         {props.data.err}
       </span>
     </>
