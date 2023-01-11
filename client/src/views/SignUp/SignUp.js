@@ -120,7 +120,7 @@ function SignUp() {
             SignUp
           </button>
           {err && (
-            <p className="text-red-500 font-bold">
+            <p className="text-red-500 font-bold text-center">
               This email is already taken
             </p>
           )}

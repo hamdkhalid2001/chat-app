@@ -43,13 +43,13 @@ function ChatArea() {
 
   async function sendMessage(message) {
     try {
-      const res = await updateDoc(doc(db, "chats", data.chatId), {
+      await updateDoc(doc(db, "chats", data.chatId), {
         messages: arrayUnion({
           sender: user.uid,
           message: message,
         }),
       });
-      const res2 = await setDoc(
+      await setDoc(
         doc(db, "userChats", user.uid),
         {
           [data.chatId + ".chatInfo"]: {
@@ -59,7 +59,7 @@ function ChatArea() {
         },
         { merge: true }
       );
-      const res3 = await setDoc(
+      await setDoc(
         doc(db, "userChats", data.user.uid),
         {
           [data.chatId + ".chatInfo"]: {

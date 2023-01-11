@@ -6,7 +6,7 @@ const db = getFirestore(firebaseApp);
 export async function addDataToFirebase(docId, data, merge) {
   console.log("Sending data", docId);
   try {
-    const docRef = await setDoc(doc(db, "users", docId), data, {
+    await setDoc(doc(db, "users", docId), data, {
       merge: merge,
     });
     // console.log("Document written with ID: ", docRef.id);

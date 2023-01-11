@@ -8,6 +8,7 @@ function Login() {
     email: "",
     password: "",
   });
+  const [err, setErr] = useState(false);
 
   const navigate = useNavigate();
 
@@ -25,6 +26,10 @@ function Login() {
       console.log("res", res);
     } catch (error) {
       console.log("Error Code: ", error.code, " ", error.message);
+      console.log("Code: ", error.code, " ");
+      if (error.code === "auth/user-not-found") {
+        setErr(true);
+      }
     }
   }
 
@@ -62,6 +67,11 @@ function Login() {
           >
             Login
           </button>
+          {err && (
+            <p className="text-red-500 font-bold text-center">
+              The email or password is incorrect!
+            </p>
+          )}
         </section>
       </form>
       <p className="underline mt-6 text-[18px]">Forget Your Password?</p>
