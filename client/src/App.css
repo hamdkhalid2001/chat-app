@@ -29,4 +29,26 @@ h1{
     scrollbar-width: none;
     /* Firefox */
 }
+
+.input1{
+    display: none;
+}
+
+.input2{
+    display: none;
+}
+
+.input3{
+    display: none;
+}
+
+input:invalid[focused="true"] + .input1{
+    display: block;
+}
+input:invalid[focused="true"] + .input2{
+    display: block;
+}
+input:invalid[focused="true"] + .input3{
+    display: block;
+}
  /* w-[450px] rounded-[14px] bg-gray-200 px-4 py-3 block' */

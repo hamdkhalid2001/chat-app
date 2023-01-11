@@ -10,6 +10,7 @@ import {
   setDoc,
   doc,
   arrayUnion,
+  serverTimestamp,
 } from "firebase/firestore";
 import { firebaseApp } from "../../firebase/firebase";
 import { getAuth, signOut } from "firebase/auth";
@@ -53,6 +54,7 @@ function ChatArea() {
         {
           [data.chatId + ".chatInfo"]: {
             lastMessage: message,
+            date: serverTimestamp(),
           },
         },
         { merge: true }
@@ -62,6 +64,7 @@ function ChatArea() {
         {
           [data.chatId + ".chatInfo"]: {
             lastMessage: message,
+            date: serverTimestamp(),
           },
         },
         { merge: true }
@@ -72,23 +75,24 @@ function ChatArea() {
   }
 
   return (
-    <section className="px-12">
-      {data.user && (
-        <>
-          <div className="flex justify-between">
-            <h1>{data.user?.name}</h1>
-            <button
-              className="w-[130px] py-2 border border-black rounded-[14px] self-center"
-              onClick={logOut}
-            >
-              Sign Out
-            </button>
-          </div>
-
-          <Messages />
-          <SendMessage handleSendMessage={sendMessage} />
-        </>
+    <section className="px-12 relative">
+      <div className="flex justify-between h-full">
+        <h1>{data.user?.name}</h1>
+        <button
+          className="w-[130px] py-2 border border-black rounded-[14px] self-center"
+          onClick={logOut}
+        >
+          Sign Out
+        </button>
+      </div>
+      {Object.keys(data.user).length <= 0 && (
+        <div className="grid place-items-center text-2xl h-[50vh] w-full absolute">
+          <p>Choose to start conversation</p>
+        </div>
       )}
+
+      <Messages />
+      <SendMessage handleSendMessage={sendMessage} />
     </section>
   );
 }
