@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
+import { ChatContext } from "../../contexts/ChatProvider";
 
 function Chats(props) {
-  // console.log("User data", props.user);
+  const { dispatch } = useContext(ChatContext);
+
   return (
     <div
       className="py-5 px-2 w-full border border-gray-300 rounded-[12px] cursor-pointer"
-      onClick={() => props.handleSelectUser(props.user)}
+      onClick={() => dispatch({ type: "CHANGE_USER", payload: props.user })}
+      // onClick={() => props.handleSelectUser(props.user)}
     >
       <div className="flex h-full w-full">
         <img
@@ -13,7 +16,10 @@ function Chats(props) {
           alt="User icon"
           className="w-[60px] h-[60px]"
         />
-        <p className="self-center ml-3">{props.user.friendName}</p>
+        <div className="self-center">
+          <p className="ml-3 font-bold">{props.user.name}</p>
+          <p className="ml-3 font-light">{props.user.lastMessage}</p>
+        </div>
       </div>
     </div>
   );

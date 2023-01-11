@@ -6,7 +6,6 @@ import { firebaseApp } from "../../firebase/firebase";
 
 function ChatPage() {
   const [users, setUsers] = useState([]);
-  const [selectedUser, setSelectedUser] = useState();
 
   const db = getFirestore(firebaseApp);
   useEffect(() => {
@@ -24,20 +23,14 @@ function ChatPage() {
     return usersData;
   }
 
-  //The purpose of this function is to store user which is selected to do chat
-  function addUser(user) {
-    console.log("user from Chat Page: ", user);
-    setSelectedUser(user);
-  }
-
   return (
     <div className="w-full p-12 flex">
       <section className="w-[25%]">
-        <SideBar users={users} handleSelectUser={addUser} />
+        <SideBar users={users} />
       </section>
 
       <section className="w-[75%]">
-        <ChatArea selectedUser={selectedUser} />
+        <ChatArea />
       </section>
     </div>
   );

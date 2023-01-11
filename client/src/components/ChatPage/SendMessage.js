@@ -8,9 +8,8 @@ function SendMessage(props) {
   }
 
   function sendMessage(e) {
-    console.log("Submitting");
     e.preventDefault();
-    if (message !== " ") {
+    if (message) {
       setMessage("");
       props.handleSendMessage(message);
     }

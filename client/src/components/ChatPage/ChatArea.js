@@ -2,40 +2,37 @@ import React from "react";
 import Messages from "./Messages";
 import SendMessage from "./SendMessage";
 import { AuthContext } from "../../contexts/AuthProvider";
-import { useState, useContext, useEffect } from "react";
+import { ChatContext } from "../../contexts/ChatProvider";
+import { useContext, useEffect } from "react";
 import {
   getFirestore,
   updateDoc,
   setDoc,
-  getDoc,
   doc,
-  serverTimestamp,
   arrayUnion,
+  serverTimestamp,
 } from "firebase/firestore";
 import { firebaseApp } from "../../firebase/firebase";
 import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
-//Logic to do messaging will be handled here
-
-function ChatArea(props) {
+function ChatArea() {
+  const { data } = useContext(ChatContext);
+  const { dispatch } = useContext(ChatContext);
   const db = getFirestore(firebaseApp);
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
-  const reciever = props.selectedUser;
-  const sender = user;
-  console.log("Current user: ", sender.uid);
-  console.log("Reciever: ", reciever);
 
   useEffect(() => {
-    if (!props.selectedUser) return;
-    createCollection();
-  }, [props.selectedUser]);
+    if (!data.user) return;
+    // createCollection();
+  }, [data.user]);
 
   function logOut() {
     const auth = getAuth();
     signOut(auth)
       .then(() => {
+        dispatch({ type: "DELETE_USER" });
         navigate("/login");
         console.log("Signed Out");
       })
@@ -45,59 +42,57 @@ function ChatArea(props) {
   }
 
   async function sendMessage(message) {
-    const combinedId =
-      sender.uid > reciever.friendId
-        ? sender.uid + reciever.friendId
-        : reciever.friendId + sender.uid;
-
     try {
-      const res = await updateDoc(doc(db, "chats", combinedId), {
+      const res = await updateDoc(doc(db, "chats", data.chatId), {
         messages: arrayUnion({
           sender: user.uid,
           message: message,
         }),
-        // timestamp: serverTimestamp(),
       });
-    } catch (error) {
-      console.log(error);
-    }
-  }
-  async function createCollection() {
-    //combining the id in such a way that collection id will remain same for two users
-    const combinedId =
-      sender.uid > reciever.friendId
-        ? sender.uid + reciever.friendId
-        : reciever.friendId + sender.uid;
-    try {
-      const res = await getDoc(doc(db, "chats", combinedId));
-      if (!res.exists()) {
-        console.log("sdfsadfsadfasdf", combinedId);
-        await setDoc(doc(db, "chats", combinedId), {
-          messages: [],
-        });
-      }
+      const res2 = await setDoc(
+        doc(db, "userChats", user.uid),
+        {
+          [data.chatId + ".chatInfo"]: {
+            lastMessage: message,
+            date: serverTimestamp(),
+          },
+        },
+        { merge: true }
+      );
+      const res3 = await setDoc(
+        doc(db, "userChats", data.user.uid),
+        {
+          [data.chatId + ".chatInfo"]: {
+            lastMessage: message,
+            date: serverTimestamp(),
+          },
+        },
+        { merge: true }
+      );
     } catch (error) {
       console.log(error);
     }
   }
 
   return (
-    <section className="px-12">
-      {reciever && (
-        <>
-          <div className="flex justify-between">
-            <h1>{props.selectedUser.friendName}</h1>
-            <button
-              className="w-[130px] py-2 border border-black rounded-[14px] self-center"
-              onClick={logOut}
-            >
-              Sign Out
-            </button>
-          </div>
-          <Messages friend={props.selectedUser} />
-          <SendMessage handleSendMessage={sendMessage} />
-        </>
+    <section className="px-12 relative">
+      <div className="flex justify-between h-full">
+        <h1>{data.user?.name}</h1>
+        <button
+          className="w-[130px] py-2 border border-black rounded-[14px] self-center"
+          onClick={logOut}
+        >
+          Sign Out
+        </button>
+      </div>
+      {Object.keys(data.user).length <= 0 && (
+        <div className="grid place-items-center text-2xl h-[50vh] w-full absolute">
+          <p>Choose to start conversation</p>
+        </div>
       )}
+
+      <Messages />
+      <SendMessage handleSendMessage={sendMessage} />
     </section>
   );
 }
