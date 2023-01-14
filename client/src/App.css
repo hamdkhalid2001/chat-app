@@ -51,3 +51,12 @@ input:invalid[focused="true"] + .input3{
     display: block;
 }
  /* w-[450px] rounded-[14px] bg-gray-200 px-4 py-3 block' */
+ input[type="file"] {
+     display: none;
+ }
+ .custom-file-upload {
+     border: 1px solid #ccc;
+     display: inline-block;
+     padding: 6px 12px;
+     cursor: pointer;
+ }

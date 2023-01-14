@@ -27,13 +27,23 @@ function SideBar() {
 
   return (
     <div>
-      <p className="text-[28px] font-bold mb-2">
-        Hey{" "}
-        {user.displayName?.includes(" ")
-          ? user.displayName.split(" ")[0]
-          : user.displayName}
-        !
-      </p>
+      <div className="flex mb-4">
+        {user.photoURL ? (
+          <img src={user.photoURL} className="w-[60px] h-[60px]" />
+        ) : (
+          <img
+            src={require("../../assets/images/user-icon.png")}
+            className="w-[60px] h-[60px]"
+          />
+        )}
+        <p className="text-[28px] font-bold mb-2 ml-4 self-center mt-2">
+          Hey{" "}
+          {user.displayName?.includes(" ")
+            ? user.displayName.split(" ")[0]
+            : user.displayName}
+          !
+        </p>
+      </div>
 
       <Search />
       {/* {userToAdd && <AddFriend user={userToAdd} />} */}

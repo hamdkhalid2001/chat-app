@@ -3,7 +3,7 @@ import { ChatContext } from "../../contexts/ChatProvider";
 
 function Chats(props) {
   const { dispatch } = useContext(ChatContext);
-
+  console.log("In chats:", props.user);
   return (
     <div
       className="py-5 px-2 w-full border border-gray-300 rounded-[12px] cursor-pointer"
@@ -11,11 +11,19 @@ function Chats(props) {
       // onClick={() => props.handleSelectUser(props.user)}
     >
       <div className="flex h-full w-full">
-        <img
-          src={require("../../assets/images/user-icon.png")}
-          alt="User icon"
-          className="w-[60px] h-[60px]"
-        />
+        {props.user.photoUrl ? (
+          <img
+            src={props.user.photoUrl}
+            alt="user-pic"
+            className="h-[60px] w-[60px]"
+          />
+        ) : (
+          <img
+            src={require("../../assets/images/user-icon.png")}
+            alt="User icon"
+            className="w-[60px] h-[60px]"
+          />
+        )}
         <div className="self-center">
           <p className="ml-3 font-bold">{props.user.name}</p>
           <p className="ml-3 font-light">{props.user.lastMessage}</p>

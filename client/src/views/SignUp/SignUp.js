@@ -6,46 +6,91 @@ import {
   createUserWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
+
 import InputField from "../../components/InputField";
 
 function SignUp() {
+  const storage = getStorage();
   const [userData, setUserData] = useState({
     uid: "",
     name: "",
-    email: "",
   });
+  const [profileImg, setProfileImg] = useState();
   const [authData, setAuthData] = useState({
     email: "",
     password: "",
   });
-  const [err, setErr] = useState(false);
+  const [err, setErr] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const auth = getAuth();
 
   const navigate = useNavigate();
 
-  async function signUp(e) {
+  async function handleSignUp(e) {
     e.preventDefault();
+
+    //Authenticating user
     try {
+      setLoading(true);
       const res = await createUserWithEmailAndPassword(
         auth,
         authData.email,
         authData.password
       );
       const user = res.user;
-      updateProfile(auth.currentUser, {
-        displayName: userData.name,
-      });
-      console.log("User while signing up: ", user);
-      addDataToFirebase(user.uid, {
+      //In case user uploaded no img
+      if (!profileImg) {
+        signUp(user);
+      } else {
+        //User will upload the image as well as store user in db
+        uploadImage(user);
+      }
+    } catch (error) {
+      if (error.code === "auth/email-already-in-use")
+        setErr("This email is already taken");
+      setLoading(false);
+    }
+  }
+
+  async function uploadImage(user) {
+    const storageRef = ref(storage, user.uid);
+    const uploadTask = uploadBytesResumable(storageRef, profileImg);
+    uploadTask.on(
+      (error) => {
+        setErr("Error while image was uploading");
+        console.log("Error while image was uploading: ", error);
+      },
+      async () => {
+        //Uploading img and adding user
+        const imgPath = await getDownloadURL(uploadTask.snapshot.ref);
+        signUp(user, imgPath);
+      }
+    );
+  }
+
+  async function signUp(user, imgPath) {
+    try {
+      await addDataToFirebase(user.uid, {
         ...userData,
         uid: user.uid,
-        email: user.email,
+        email: authData.email,
+        photoUrl: imgPath,
+      });
+      await updateProfile(auth.currentUser, {
+        displayName: userData.name,
+        photoURL: imgPath,
       });
       navigate("/");
+      setLoading(false);
     } catch (error) {
       console.log(error);
-      if (error.code === "auth/email-already-in-use") setErr(true);
     }
   }
 
@@ -57,10 +102,13 @@ function SignUp() {
       };
     });
   }
+  function handleImage(event) {
+    setProfileImg(event.target.files[0]);
+  }
   function handleAuthData(event) {
-    setAuthData((prevAuthData) => {
+    setAuthData((prevUserData) => {
       return {
-        ...prevAuthData,
+        ...prevUserData,
         [event.target.name]: event.target.value,
       };
     });
@@ -104,7 +152,7 @@ function SignUp() {
   return (
     <div className="w-full h-[100vh] flex flex-col justify-center items-center">
       <form
-        onSubmit={signUp}
+        onSubmit={handleSignUp}
         method="POST"
         className="w-full grid place-items-center"
       >
@@ -115,17 +163,27 @@ function SignUp() {
           {signUpFormData.map((element, index) => {
             return <InputField data={element} key={index} />;
           })}
+          <label className="custom-file-upload">
+            <input type="file" name="img" onChange={handleImage} />
+            Add Avatar
+          </label>
           <button
             type="submit"
-            className="w-[340px] sm:w-[450px] mt-1 rounded-[8px] text-center py-2 bg-blue-500 text-white btn-form"
+            className="w-[340px] sm:w-[450px] mt-1 rounded-[8px] text-center py-2 bg-blue-500 text-white btn-form disabled:bg-blue-400"
+            disabled={loading}
           >
-            SignUp
+            <span className="relative">
+              SignUp
+              {loading && (
+                <img
+                  src={require("../../assets/images/loading.png")}
+                  alt=""
+                  className="w-[20px] h-[20px] inline-flex absolute left-[66px] top-[1px] animate-spin"
+                />
+              )}
+            </span>
           </button>
-          {err && (
-            <p className="text-red-500 font-bold text-center">
-              This email is already taken
-            </p>
-          )}
+          {err && <p className="text-red-500 font-bold text-center">{err}</p>}
         </section>
       </form>
     </div>
