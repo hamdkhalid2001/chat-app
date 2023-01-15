@@ -9,24 +9,11 @@ function ChatPage() {
   const { data } = useContext(ChatContext);
 
   const [users, setUsers] = useState([]);
-  const [showChats, setShowChats] = useState(false);
 
   const db = getFirestore(firebaseApp);
   useEffect(() => {
     readUsers().then((res) => setUsers(res));
   }, []);
-
-  useEffect(() => {
-    console.log("Selected user", Object.entries(data.user).length);
-    console.log(data);
-    console.log("changing");
-    if (Object.entries(data.user).length > 0) {
-      setShowChats(true);
-    } else {
-      setShowChats(false);
-    }
-    console.log(showChats);
-  }, [data]);
 
   async function readUsers() {
     let usersData = [];
@@ -42,7 +29,7 @@ function ChatPage() {
     <div className="w-full py-14 flex md:flex-row flex-col items-center md:items-start relative">
       <section
         className={
-          showChats
+          Object.entries(data.user).length > 0
             ? "hidden md:block md:w-[35%] xl:w-[25%] w-[90%]"
             : "block md:w-[35%] xl:w-[25%]  w-[90%]"
         }
@@ -52,7 +39,7 @@ function ChatPage() {
 
       <section
         className={
-          !showChats
+          Object.entries(data.user).length <= 0
             ? "hidden md:block md:w-[65%] xl:w-[75%] w-[90%]"
             : "block md:w-[65%] xl:w-[75%] w-[90%]"
         }
