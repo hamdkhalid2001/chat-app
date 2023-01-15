@@ -49,8 +49,9 @@ function SideBar() {
       <Search />
       <p className="text-[28px] font-semibold text-[#FAFCFF]">Friends</p>
       <section
-        className="flex flex-col   overflow-y-scroll mt-4 bg-[#5c4f81] p-5 rounded-xl max-h-[61vh]"
+        className="flex flex-col overflow-y-scroll mt-4 py-5 rounded-xl max-h-[61vh]"
         id="chats-parent"
+        style={{ background: chats ? "bg-[#5c4f81]" : "" }}
       >
         {chats &&
           Object.entries(chats)

@@ -77,11 +77,12 @@ function SignUp() {
 
   async function signUp(user, imgPath) {
     try {
+      console.log("Signing up", imgPath);
       await addDataToFirebase(user.uid, {
         ...userData,
         uid: user.uid,
         email: authData.email,
-        photoUrl: imgPath,
+        photoUrl: imgPath || null,
       });
       await updateProfile(auth.currentUser, {
         displayName: userData.name,

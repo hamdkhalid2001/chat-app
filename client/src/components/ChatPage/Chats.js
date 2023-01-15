@@ -5,7 +5,7 @@ function Chats(props) {
   const { dispatch } = useContext(ChatContext);
   return (
     <div
-      className="pt-2 pl-3 w-full cursor-pointer"
+      className="pt-2  w-full cursor-pointer"
       onClick={() => dispatch({ type: "CHANGE_USER", payload: props.user })}
     >
       <div className="flex h-full w-full text-[#FAFCFF]">
@@ -21,9 +21,7 @@ function Chats(props) {
         <div className="self-center">
           <p className="ml-3 font-medium">{props.user.name}</p>
           <p className="ml-3 font-light">{props.user.lastMessage}</p>
-          {!props.user.lastMessage && props.user.photoUrl && (
-            <p className="ml-3 font-light">Image</p>
-          )}
+          {/* {!props.user.lastMessage && <p className="ml-3 font-light">Image</p>} */}
         </div>
       </div>
       <hr className="my-6 opacity-20" />

@@ -13,8 +13,6 @@ export function ChatContextProvider({ children }) {
   const chatReducer = (state, action) => {
     switch (action.type) {
       case "CHANGE_USER":
-        console.log("Setting user");
-
         return {
           user: action.payload,
           chatId:
@@ -23,7 +21,6 @@ export function ChatContextProvider({ children }) {
               : action.payload.uid + currentUser.uid,
         };
       case "DELETE_USER":
-        console.log("Deleting user");
         return {
           user: {},
           chatId: null,
