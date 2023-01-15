@@ -12,11 +12,7 @@ function Chats(props) {
     >
       <div className="flex h-full w-full">
         {props.user.photoUrl ? (
-          <img
-            src={props.user.photoUrl}
-            alt="user-pic"
-            className="h-[60px] w-[60px]"
-          />
+          <img src={props.user.photoUrl} alt="" className="h-[60px] w-[60px]" />
         ) : (
           <img
             src={require("../../assets/images/user-icon.png")}

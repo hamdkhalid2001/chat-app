@@ -25,7 +25,10 @@ function Messages() {
   }, [data.user]);
 
   return (
-    <div className="w-full h-[70vh] flex flex-col">
+    <div
+      className="w-full h-[70vh] flex flex-col overflow-y-scroll gap-y-0"
+      id="chats-parent"
+    >
       {messages &&
         messages.map((message, index) => {
           return <Message message={message} key={index} id={index} />;

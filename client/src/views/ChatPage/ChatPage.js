@@ -6,6 +6,7 @@ import { firebaseApp } from "../../firebase/firebase";
 
 function ChatPage() {
   const [users, setUsers] = useState([]);
+  const [chatsView, setChatsView] = useState(false);
 
   const db = getFirestore(firebaseApp);
   useEffect(() => {
@@ -24,12 +25,24 @@ function ChatPage() {
   }
 
   return (
-    <div className="w-full p-12 flex">
-      <section className="w-[25%]">
+    <div className="w-full py-8 flex sm:flex-row flex-col items-center sm:items-start relative">
+      <section
+        className={
+          chatsView
+            ? "hidden sm:block sm:w-[25%] w-[90%]"
+            : "block sm:w-[25%] w-[90%]"
+        }
+      >
         <SideBar users={users} />
       </section>
 
-      <section className="w-[75%]">
+      <section
+        className={
+          !chatsView
+            ? "hidden sm:block sm:w-[75%] w-[90%]"
+            : "block sm:w-[75%] w-[90%]"
+        }
+      >
         <ChatArea />
       </section>
     </div>
