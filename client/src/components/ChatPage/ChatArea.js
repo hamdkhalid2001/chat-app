@@ -1,32 +1,16 @@
 import React from "react";
 import Messages from "./Messages";
 import SendMessage from "./SendMessage";
-import { AuthContext } from "../../contexts/AuthProvider";
 import { ChatContext } from "../../contexts/ChatProvider";
-import { useContext, useEffect } from "react";
-import {
-  getFirestore,
-  updateDoc,
-  setDoc,
-  doc,
-  arrayUnion,
-  serverTimestamp,
-} from "firebase/firestore";
-import { firebaseApp } from "../../firebase/firebase";
+import { useContext } from "react";
+
 import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
 function ChatArea() {
   const { data } = useContext(ChatContext);
   const { dispatch } = useContext(ChatContext);
-  const db = getFirestore(firebaseApp);
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
-
-  useEffect(() => {
-    if (!data.user) return;
-    // createCollection();
-  }, [data.user]);
 
   function logOut() {
     const auth = getAuth();
@@ -41,58 +25,44 @@ function ChatArea() {
       });
   }
 
-  async function sendMessage(message) {
-    try {
-      await updateDoc(doc(db, "chats", data.chatId), {
-        messages: arrayUnion({
-          sender: user.uid,
-          message: message,
-        }),
-      });
-      await setDoc(
-        doc(db, "userChats", user.uid),
-        {
-          [data.chatId + ".chatInfo"]: {
-            lastMessage: message,
-            date: serverTimestamp(),
-          },
-        },
-        { merge: true }
-      );
-      await setDoc(
-        doc(db, "userChats", data.user.uid),
-        {
-          [data.chatId + ".chatInfo"]: {
-            lastMessage: message,
-            date: serverTimestamp(),
-          },
-        },
-        { merge: true }
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   return (
-    <section className="px-12 relative">
-      <div className="flex justify-between h-full">
-        <h1>{data.user?.name}</h1>
+    <section className="md:px-6 xl:px-12 relative ">
+      <div className="flex flex-col md:flex-row md:justify-between h-full">
+        <div className="flex mt-1">
+          <p className="text-[#FAFCFF] text-[28px]">{data.user?.name}</p>
+          <button
+            className="border-none ml-auto font-semibold flex md:hidden"
+            onClick={() => {
+              dispatch({ type: "DELETE_USER" });
+            }}
+          >
+            <img
+              src={require("../../assets/images/back-arrow.png")}
+              alt=""
+              className="inline-flex w-[25px] self-center mr-2"
+            />
+            <p className="font-semibold self-center text-[#FAFCFF]">Go Back</p>
+          </button>
+        </div>
         <button
-          className="w-[130px] py-2 border border-black rounded-[14px] self-center"
+          className="md:w-[130px] py-2 font-medium underline self-center mt-2 md:mt-0 md:mr-0 mr-auto text-[#FAFCFF]"
           onClick={logOut}
         >
           Sign Out
         </button>
       </div>
       {Object.keys(data.user).length <= 0 && (
-        <div className="grid place-items-center text-2xl h-[50vh] w-full absolute">
-          <p>Choose to start conversation</p>
+        <div className="grid place-items-center md:text-5xl h-[60vh] w-full absolute">
+          <p className="text-[#FAFCFF]">Choose to start conversation</p>
         </div>
       )}
-
-      <Messages />
-      <SendMessage handleSendMessage={sendMessage} />
+      {Object.keys(data.user).length > 0 && (
+        <div className="bg-[#5c4f81] rounded-2xl">
+          <Messages />
+          <hr className="opacity-5" />
+          <SendMessage />
+        </div>
+      )}
     </section>
   );
 }

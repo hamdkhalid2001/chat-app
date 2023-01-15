@@ -26,21 +26,32 @@ function SideBar() {
   }, [user.uid]);
 
   return (
-    <div>
-      <p className="text-[28px] font-bold mb-2">
-        Hey{" "}
-        {user.displayName?.includes(" ")
-          ? user.displayName.split(" ")[0]
-          : user.displayName}
-        !
-      </p>
+    <div className="sm:px-8">
+      <div className="flex mb-4">
+        {user.photoURL ? (
+          <img src={user.photoURL} className="w-[60px] h-[60px]" alt="" />
+        ) : (
+          <img
+            src={require("../../assets/images/user-icon.png")}
+            className="w-[60px] h-[60px]"
+            alt=""
+          />
+        )}
+        <p className="text-[28px] font-semibold mb-2 ml-4 self-center mt-2 text-[#FAFCFF]">
+          Hey{" "}
+          {user.displayName?.includes(" ")
+            ? user.displayName.split(" ")[0]
+            : user.displayName}
+          !
+        </p>
+      </div>
 
       <Search />
-      {/* {userToAdd && <AddFriend user={userToAdd} />} */}
-      <h3 className="text-[28px] font-semibold">Friends</h3>
+      <p className="text-[28px] font-semibold text-[#FAFCFF]">Friends</p>
       <section
-        className="flex flex-col gap-y-4  overflow-y-scroll"
+        className="flex flex-col overflow-y-scroll mt-4 py-5 rounded-xl max-h-[61vh]"
         id="chats-parent"
+        style={{ background: chats ? "bg-[#5c4f81]" : "" }}
       >
         {chats &&
           Object.entries(chats)

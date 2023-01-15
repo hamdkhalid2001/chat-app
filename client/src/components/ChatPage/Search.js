@@ -77,6 +77,7 @@ function Search(props) {
             uid: userToAdd.uid,
             name: userToAdd.name,
             email: userToAdd.email,
+            photoUrl: userToAdd.photoUrl,
             date: serverTimestamp(),
           },
         },
@@ -92,6 +93,7 @@ function Search(props) {
             uid: user.uid,
             name: user.displayName,
             email: user.email,
+            photoUrl: user.photoURL,
             date: serverTimestamp(),
           },
         },
@@ -106,11 +108,11 @@ function Search(props) {
 
   return (
     <div>
-      <div className="bg-gray-200 flex pr-3 mb-5">
+      <div className="bg-[#5c4f81] flex pr-3 mb-5">
         <input
           type="text"
-          className="w-[70%]"
-          placeholder="Search"
+          className="w-[70%] bg-[#5c4f81] text-[#FAFCFF]"
+          placeholder="Search with email"
           onChange={handleInput}
           onKeyDown={handleKey}
           value={searchText}

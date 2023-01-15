@@ -13,7 +13,6 @@ function Messages() {
   useEffect(() => {
     function readMessages() {
       setMessages("");
-      console.log("asdsds", data.user);
       const unsub = onSnapshot(doc(db, "chats", data.chatId), (doc) => {
         doc.exists() && setMessages(doc.data().messages);
       });
@@ -25,7 +24,10 @@ function Messages() {
   }, [data.user]);
 
   return (
-    <div className="w-full h-[70vh] flex flex-col">
+    <div
+      className="w-full h-[68vh] flex flex-col overflow-y-scroll gap-y-0 bg-[#5c4f81] rounded-t-2xl px-2 md:px-8 mt-7"
+      id="chats-parent"
+    >
       {messages &&
         messages.map((message, index) => {
           return <Message message={message} key={index} id={index} />;
