@@ -16,7 +16,7 @@ function Message(message) {
     marginTop: message.id === 0 ? "auto" : "",
     borderRadius: "14px",
     color: senderId === user.uid ? "white" : "black",
-    border: senderId !== user.uid ? "1px solid black" : "",
+    border: "none",
   };
   return (
     <>

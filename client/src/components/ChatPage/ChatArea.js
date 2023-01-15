@@ -28,8 +28,8 @@ function ChatArea() {
   return (
     <section className="md:px-6 xl:px-12 relative ">
       <div className="flex flex-col md:flex-row md:justify-between h-full">
-        <div className="flex">
-          <h1>{data.user?.name}</h1>
+        <div className="flex mt-1">
+          <p className="text-[#FAFCFF] text-[28px]">{data.user?.name}</p>
           <button
             className="border-none ml-auto font-semibold flex md:hidden"
             onClick={() => {
@@ -41,26 +41,27 @@ function ChatArea() {
               alt=""
               className="inline-flex w-[25px] self-center mr-2"
             />
-            <p className="font-semibold self-center">Go Back</p>
+            <p className="font-semibold self-center text-[#FAFCFF]">Go Back</p>
           </button>
         </div>
         <button
-          className="md:w-[130px] py-2 font-semibold md:border border-black rounded-[14px] self-center mt-2 md:mt-0 md:mr-0 mr-auto"
+          className="md:w-[130px] py-2 font-medium underline self-center mt-2 md:mt-0 md:mr-0 mr-auto text-[#FAFCFF]"
           onClick={logOut}
         >
           Sign Out
         </button>
       </div>
       {Object.keys(data.user).length <= 0 && (
-        <div className="grid place-items-center text-2xl h-[50vh] w-full absolute">
-          <p>Choose to start conversation</p>
+        <div className="grid place-items-center md:text-5xl h-[60vh] w-full absolute">
+          <p className="text-[#FAFCFF]">Choose to start conversation</p>
         </div>
       )}
       {Object.keys(data.user).length > 0 && (
-        <>
+        <div className="bg-[#5c4f81] rounded-2xl">
           <Messages />
+          <hr className="opacity-5" />
           <SendMessage />
-        </>
+        </div>
       )}
     </section>
   );

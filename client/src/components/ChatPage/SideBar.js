@@ -26,7 +26,7 @@ function SideBar() {
   }, [user.uid]);
 
   return (
-    <div className="md:pl-2 ">
+    <div className="sm:px-8">
       <div className="flex mb-4">
         {user.photoURL ? (
           <img src={user.photoURL} className="w-[60px] h-[60px]" alt="" />
@@ -37,7 +37,7 @@ function SideBar() {
             alt=""
           />
         )}
-        <p className="text-[28px] font-bold mb-2 ml-4 self-center mt-2">
+        <p className="text-[28px] font-semibold mb-2 ml-4 self-center mt-2 text-[#FAFCFF]">
           Hey{" "}
           {user.displayName?.includes(" ")
             ? user.displayName.split(" ")[0]
@@ -47,10 +47,9 @@ function SideBar() {
       </div>
 
       <Search />
-      {/* {userToAdd && <AddFriend user={userToAdd} />} */}
-      <h3 className="text-[28px] font-semibold">Friends</h3>
+      <p className="text-[28px] font-semibold text-[#FAFCFF]">Friends</p>
       <section
-        className="flex flex-col gap-y-4  overflow-y-scroll mt-4"
+        className="flex flex-col   overflow-y-scroll mt-4 bg-[#5c4f81] p-5 rounded-xl max-h-[61vh]"
         id="chats-parent"
       >
         {chats &&

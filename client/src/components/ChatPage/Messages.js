@@ -25,7 +25,7 @@ function Messages() {
 
   return (
     <div
-      className="w-full h-[70vh] flex flex-col overflow-y-scroll gap-y-0"
+      className="w-full h-[68vh] flex flex-col overflow-y-scroll gap-y-0 bg-[#5c4f81] rounded-t-2xl px-2 md:px-8 mt-7"
       id="chats-parent"
     >
       {messages &&

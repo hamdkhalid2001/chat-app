@@ -5,11 +5,10 @@ function Chats(props) {
   const { dispatch } = useContext(ChatContext);
   return (
     <div
-      className="py-5 px-2 w-full border border-gray-300 rounded-[12px] cursor-pointer"
+      className="pt-2 pl-3 w-full cursor-pointer"
       onClick={() => dispatch({ type: "CHANGE_USER", payload: props.user })}
-      // onClick={() => props.handleSelectUser(props.user)}
     >
-      <div className="flex h-full w-full">
+      <div className="flex h-full w-full text-[#FAFCFF]">
         {props.user.photoUrl ? (
           <img src={props.user.photoUrl} alt="" className="h-[60px] w-[60px]" />
         ) : (
@@ -20,10 +19,14 @@ function Chats(props) {
           />
         )}
         <div className="self-center">
-          <p className="ml-3 font-bold">{props.user.name}</p>
+          <p className="ml-3 font-medium">{props.user.name}</p>
           <p className="ml-3 font-light">{props.user.lastMessage}</p>
+          {!props.user.lastMessage && props.user.photoUrl && (
+            <p className="ml-3 font-light">Image</p>
+          )}
         </div>
       </div>
+      <hr className="my-6 opacity-20" />
     </div>
   );
 }

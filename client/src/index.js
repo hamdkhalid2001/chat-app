@@ -8,7 +8,7 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <AuthProvider>
     <ChatContextProvider>
-      <main className="w-full max-w-[1920px] bg-[#4e426d] px-0">
+      <main className="w-full max-w-[1920px] min-h-screen overflow-hidden bg-[#4e426d] px-0">
         <App />
       </main>
     </ChatContextProvider>

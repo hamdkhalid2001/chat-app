@@ -30,6 +30,8 @@ function SendMessage(props) {
   async function sendMessage(event) {
     event.preventDefault();
     try {
+      setMessage("");
+
       if (image) {
         const storageRef = ref(storage, data.chatId + Date.now().toString());
         const uploadTask = uploadBytesResumable(storageRef, image);
@@ -77,7 +79,6 @@ function SendMessage(props) {
         },
         { merge: true }
       );
-      setMessage("");
       setImage(null);
     } catch (error) {
       console.log(error);
@@ -85,13 +86,13 @@ function SendMessage(props) {
   }
 
   return (
-    <section className=" w-full mt-4">
+    <section className="w-full py-2">
       <div>
         <form action="" onSubmit={sendMessage}>
-          <div className="bg-gray-200 flex pr-3 justify-between">
+          <div className="flex pr-3 justify-between bg-[#5c4f81] text-[#FAFCFF] rounded-b-2xl px-2 md:px-6">
             <input
               type="text"
-              className="w-[70%]"
+              className="w-[70%] bg-[#5c4f81] text-[#FAFCFF]"
               placeholder="Send Message"
               onChange={(e) => setMessage(e.target.value)}
               value={message}
@@ -109,7 +110,7 @@ function SendMessage(props) {
                 <input
                   id="file-input"
                   type="file"
-                  className="invisible w-0 h-0"
+                  className="invisible w-0 h-0 "
                   onChange={(e) => setImage(e.target.files[0])}
                 />
               </div>
