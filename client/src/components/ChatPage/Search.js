@@ -112,7 +112,7 @@ function Search(props) {
         <input
           type="text"
           className="w-[70%]"
-          placeholder="Search"
+          placeholder="Search with email"
           onChange={handleInput}
           onKeyDown={handleKey}
           value={searchText}

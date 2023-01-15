@@ -3,7 +3,6 @@ import { ChatContext } from "../../contexts/ChatProvider";
 
 function Chats(props) {
   const { dispatch } = useContext(ChatContext);
-  console.log("In chats:", props.user);
   return (
     <div
       className="py-5 px-2 w-full border border-gray-300 rounded-[12px] cursor-pointer"

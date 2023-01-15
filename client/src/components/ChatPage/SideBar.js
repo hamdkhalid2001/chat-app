@@ -26,14 +26,15 @@ function SideBar() {
   }, [user.uid]);
 
   return (
-    <div>
+    <div className="md:pl-2 ">
       <div className="flex mb-4">
         {user.photoURL ? (
-          <img src={user.photoURL} className="w-[60px] h-[60px]" />
+          <img src={user.photoURL} className="w-[60px] h-[60px]" alt="" />
         ) : (
           <img
             src={require("../../assets/images/user-icon.png")}
             className="w-[60px] h-[60px]"
+            alt=""
           />
         )}
         <p className="text-[28px] font-bold mb-2 ml-4 self-center mt-2">
@@ -49,7 +50,7 @@ function SideBar() {
       {/* {userToAdd && <AddFriend user={userToAdd} />} */}
       <h3 className="text-[28px] font-semibold">Friends</h3>
       <section
-        className="flex flex-col gap-y-4  overflow-y-scroll"
+        className="flex flex-col gap-y-4  overflow-y-scroll mt-4"
         id="chats-parent"
       >
         {chats &&

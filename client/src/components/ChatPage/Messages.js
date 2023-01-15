@@ -13,7 +13,6 @@ function Messages() {
   useEffect(() => {
     function readMessages() {
       setMessages("");
-      console.log("asdsds", data.user);
       const unsub = onSnapshot(doc(db, "chats", data.chatId), (doc) => {
         doc.exists() && setMessages(doc.data().messages);
       });

@@ -157,15 +157,20 @@ function SignUp() {
         className="w-full grid place-items-center"
       >
         <section className="mt-8 grid gap-y-4  place-items-center sign-up-form">
-          <h1 className="text-[30px] sm:text-[40px] mb-2">
+          <h1 className="text-[30px] sm:text-[40px] mb-2 text-[#FAFCFF]">
             Sign up to Get Started
           </h1>
           {signUpFormData.map((element, index) => {
             return <InputField data={element} key={index} />;
           })}
           <label className="custom-file-upload">
-            <input type="file" name="img" onChange={handleImage} />
-            Add Avatar
+            <input
+              type="file"
+              name="img"
+              onChange={handleImage}
+              className="border-none"
+            />
+            <p className="text-[#FAFCFF]">Add Avatar</p>
           </label>
           <button
             type="submit"

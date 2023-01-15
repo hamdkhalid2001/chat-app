@@ -1,4 +1,5 @@
 function AddFriend(props) {
+  console.log("Add friend rendering");
   return (
     <div className="py-5 px-3 w-full border border-gray-300 rounded-[12px] cursor-pointer flex mb-4">
       {props.user.photoUrl ? (

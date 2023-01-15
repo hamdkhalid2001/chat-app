@@ -3,7 +3,6 @@ import { AuthContext } from "../../contexts/AuthProvider";
 import { useContext } from "react";
 
 function Message(message) {
-  console.log(message);
   const { user } = useContext(AuthContext);
   const text = message.message.message;
   const senderId = message.message.sender;
@@ -12,8 +11,7 @@ function Message(message) {
     marginLeft: senderId === user.uid ? "auto" : "0px",
     padding: "8px 20px 8px 20px",
     marginBottom: "10px",
-    backgroundColor:
-      senderId === user.uid ? "rgba(29, 78, 216, 1)" : "rgba(255, 255, 255, 1)",
+    backgroundColor: senderId === user.uid ? "#0E3386" : "#F0F8FF",
     marginRight: senderId !== user.uid ? "auto" : "0px",
     marginTop: message.id === 0 ? "auto" : "",
     borderRadius: "14px",
