@@ -14,6 +14,7 @@ function SideBar() {
   useEffect(() => {
     function getChats() {
       let temp;
+
       const unsub = onSnapshot(doc(db, "userChats", user.uid), (doc) => {
         temp = doc.data();
         setChats(temp);
@@ -48,18 +49,18 @@ function SideBar() {
 
       <Search />
       <p className="text-[28px] font-semibold text-[#FAFCFF]">Friends</p>
-      <section
-        className="flex flex-col overflow-y-scroll mt-4 py-5 rounded-xl max-h-[61vh]"
-        id="chats-parent"
-        style={{ background: chats ? "bg-[#5c4f81]" : "" }}
-      >
-        {chats &&
-          Object.entries(chats)
+      {chats && (
+        <section
+          className="flex flex-col overflow-y-scroll bg-[#5c4f81] mt-4 py-5 rounded-xl max-h-[61vh] px-3"
+          id="chats-parent"
+        >
+          {Object.entries(chats)
             .sort((a, b) => b[1].date - a[1].date)
             .map((friend, index) => {
               return <Chats user={friend[1]} key={index} />;
             })}
-      </section>
+        </section>
+      )}
     </div>
   );
 }

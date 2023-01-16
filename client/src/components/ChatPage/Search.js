@@ -121,7 +121,7 @@ function Search(props) {
           src={require(`../../assets/images/search.png`)}
           alt="Search icons"
           className="w-[25px] h-[25px] self-center ml-auto"
-          onClick={addFriend}
+          onClick={searchUsers}
         />
       </div>
       {userToAdd && <AddFriend handleAddFriend={addFriend} user={userToAdd} />}
