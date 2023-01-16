@@ -1,57 +1,54 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect, useMemo } from "react";
 import {
   collection,
   query,
-  where,
   getDoc,
   getDocs,
   getFirestore,
   doc,
   setDoc,
-  updateDoc,
   serverTimestamp,
 } from "firebase/firestore";
 import { firebaseApp } from "../../firebase/firebase";
 import { AuthContext } from "../../contexts/AuthProvider";
 import AddFriend from "./AddFriend";
 
-function Search(props) {
+function Search() {
   const db = getFirestore(firebaseApp);
   const { user } = useContext(AuthContext);
 
   const [searchText, setSearchText] = useState("");
-  const [userToAdd, setUserToAdd] = useState("");
+  const [allUsers, setAllUsers] = useState("");
+
+  const searchedUsers = useMemo(() => {
+    if (!searchText || !allUsers) {
+      return "";
+    }
+    if (searchText === " ") return;
+    return allUsers.filter((user) => {
+      return user.name.toLowerCase().includes(searchText.toLowerCase());
+    });
+  }, [searchText, allUsers]);
+
+  useEffect(() => {
+    async function getAllUsers() {
+      const q = query(collection(db, "users"));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        setAllUsers((prevValue) => {
+          return [...prevValue, doc.data()];
+        });
+      });
+    }
+    getAllUsers();
+  }, []);
+
   function handleInput(event) {
     setSearchText(event.target.value);
   }
-  function handleKey(event) {
-    if (event.code === "Enter") {
-      searchUsers();
-    }
-  }
 
-  async function searchUsers() {
-    try {
-      const db = getFirestore(firebaseApp);
-
-      const q = query(
-        collection(db, "users"),
-        where("email", "==", searchText)
-      );
-
-      const querySnapshot = await getDocs(q);
-
-      querySnapshot.forEach((doc) => {
-        const userToAdd = { uid: doc.uid, ...doc.data() };
-        // props.handleSelectUser(user);
-        setUserToAdd(userToAdd);
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async function addFriend() {
+  async function addFriend(userToAdd) {
+    setSearchText("");
     console.log("Adding Friend");
     const combinedId =
       user.uid > userToAdd.uid
@@ -77,7 +74,7 @@ function Search(props) {
             name: userToAdd.name,
             email: userToAdd.email,
             photoUrl: userToAdd.photoUrl,
-            date: serverTimestamp(),
+            date: Date.now(),
           },
         },
         { merge: true }
@@ -93,13 +90,11 @@ function Search(props) {
             name: user.displayName,
             email: user.email,
             photoUrl: user.photoURL,
-            date: serverTimestamp(),
+            date: Date.now(),
           },
         },
         { merge: true }
       );
-      setUserToAdd(null);
-      setSearchText("");
     } catch (error) {
       console.log(error);
     }
@@ -113,17 +108,24 @@ function Search(props) {
           className="w-[70%] bg-[#5c4f81] text-[#FAFCFF]"
           placeholder="Search with email"
           onChange={handleInput}
-          onKeyDown={handleKey}
+          // onKeyDown={handleKey}
           value={searchText}
         />
         <img
           src={require(`../../assets/images/search.png`)}
           alt="Search icons"
           className="w-[25px] h-[25px] self-center ml-auto"
-          onClick={searchUsers}
+          // onClick={searchUsers}
         />
       </div>
-      {userToAdd && <AddFriend handleAddFriend={addFriend} user={userToAdd} />}
+      {searchedUsers &&
+        searchedUsers.map((user, index) => {
+          return (
+            <AddFriend handleAddFriend={addFriend} user={user} key={index} />
+          );
+        })}
+      {/* {searchedUsers && (
+      )} */}
     </div>
   );
 }

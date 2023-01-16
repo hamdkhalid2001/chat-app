@@ -67,7 +67,7 @@ function SendMessage(props) {
         {
           [data.chatId + ".chatInfo"]: {
             lastMessage: message,
-            date: serverTimestamp(),
+            date: Date.now(),
           },
         },
         { merge: true }
@@ -77,7 +77,7 @@ function SendMessage(props) {
         {
           [data.chatId + ".chatInfo"]: {
             lastMessage: message,
-            date: serverTimestamp(),
+            date: Date.now(),
           },
         },
         { merge: true }
