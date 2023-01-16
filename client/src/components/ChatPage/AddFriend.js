@@ -13,7 +13,7 @@ function AddFriend(props) {
       <p className="self-center ml-4 text-[#FAFCFF]">{props.user.name}</p>
       <button
         className="w-[100px] border  rounded-[12px] text-center py-2 self-center ml-auto text-[#FAFCFF]"
-        onClick={props.handleAddFriend}
+        onClick={() => props.handleAddFriend(props.user)}
       >
         Add
       </button>
