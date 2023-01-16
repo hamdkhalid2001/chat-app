@@ -45,7 +45,6 @@ function Search(props) {
         const userToAdd = { uid: doc.uid, ...doc.data() };
         // props.handleSelectUser(user);
         setUserToAdd(userToAdd);
-        console.log(doc.uid, " => ", doc.data());
       });
     } catch (error) {
       console.log(error);

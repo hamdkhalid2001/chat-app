@@ -4,7 +4,6 @@ import { doc, setDoc, getFirestore, getDoc } from "firebase/firestore";
 const db = getFirestore(firebaseApp);
 
 export async function addDataToFirebase(docId, data, merge) {
-  console.log("Sending data", docId);
   try {
     await setDoc(doc(db, "users", docId), data, {
       merge: merge,

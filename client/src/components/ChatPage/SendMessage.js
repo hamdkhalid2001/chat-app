@@ -6,6 +6,7 @@ import {
   doc,
   arrayUnion,
   serverTimestamp,
+  Timestamp,
 } from "firebase/firestore";
 import { firebaseApp } from "../../firebase/firebase";
 import { useContext } from "react";
@@ -44,6 +45,7 @@ function SendMessage(props) {
             const imgPath = await getDownloadURL(uploadTask.snapshot.ref);
             await updateDoc(doc(db, "chats", data.chatId), {
               messages: arrayUnion({
+                time: Timestamp.now(),
                 sender: user.uid,
                 message: message,
                 image: imgPath,
@@ -54,6 +56,7 @@ function SendMessage(props) {
       } else {
         await updateDoc(doc(db, "chats", data.chatId), {
           messages: arrayUnion({
+            time: Timestamp.now(),
             sender: user.uid,
             message: message,
           }),

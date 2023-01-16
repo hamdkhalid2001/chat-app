@@ -77,7 +77,6 @@ function SignUp() {
 
   async function signUp(user, imgPath) {
     try {
-      console.log("Signing up", imgPath);
       await addDataToFirebase(user.uid, {
         ...userData,
         uid: user.uid,
