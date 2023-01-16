@@ -19,6 +19,7 @@ function InputField(props) {
         onBlur={handleFocus}
         focused={focused.toString()}
         className="w-[340px] sm:w-[450px]"
+        autoComplete="off"
       />
       <span
         className={

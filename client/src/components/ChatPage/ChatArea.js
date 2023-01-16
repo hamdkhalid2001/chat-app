@@ -52,7 +52,7 @@ function ChatArea() {
         </button>
       </div>
       {Object.keys(data.user).length <= 0 && (
-        <div className="grid place-items-center md:text-5xl h-[60vh] w-full absolute">
+        <div className="grid place-items-center md:text-5xl h-[70vh] w-full absolute md:mx-[-60px]">
           <p className="text-[#FAFCFF]">Choose to start conversation</p>
         </div>
       )}
