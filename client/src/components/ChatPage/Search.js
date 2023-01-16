@@ -21,7 +21,6 @@ function Search() {
   const [allUsers, setAllUsers] = useState("");
 
   const searchedUsers = useMemo(() => {
-    console.log(allUsers);
     if (!searchText || !allUsers) {
       return "";
     }
@@ -35,7 +34,6 @@ function Search() {
     async function getAllUsers() {
       const q = query(collection(db, "users"));
       const querySnapshot = await getDocs(q);
-      console.log(querySnapshot);
       querySnapshot.forEach((doc) => {
         setAllUsers((prevValue) => {
           return [...prevValue, doc.data()];
@@ -76,7 +74,7 @@ function Search() {
             name: userToAdd.name,
             email: userToAdd.email,
             photoUrl: userToAdd.photoUrl,
-            date: serverTimestamp(),
+            date: Date.now(),
           },
         },
         { merge: true }
@@ -92,7 +90,7 @@ function Search() {
             name: user.displayName,
             email: user.email,
             photoUrl: user.photoURL,
-            date: serverTimestamp(),
+            date: Date.now(),
           },
         },
         { merge: true }
